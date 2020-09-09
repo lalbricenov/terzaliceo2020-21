@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Axios</title>
+    <style>
+      img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Este es un encabezado</h1>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis dolorem
+      eligendi vel nemo voluptatem, vero dicta numquam suscipit, debitis sunt
+      ratione ipsa optio sapiente earum hic in? Quos, voluptates? Perferendis.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam similique,
+      rem ducimus nihil numquam esse temporibus perspiciatis! Id omnis impedit,
+      atque rerum quia hic facere rem dolorem quam aut magni.
+    </p>
+    <img src="https://picsum.photos/400/600" alt="Imagen al azar" />
+    <h2>Este es un encabezado de nivel 2</h2>
+    <p id="miParrafo">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat quibusdam
+      dolorem eaque porro, repudiandae adipisci beatae illum animi veniam sunt
+      ullam expedita perspiciatis saepe nihil iste a. Eaque, voluptate at?Lorem,
+      ipsum dolor sit amet consectetur adipisicing elit. Adipisci ullam velit
+      rerum eligendi sit accusantium cum ipsam. Iure ullam, vero voluptatum
+      quaerat autem rerum! Dolores quasi non possimus architecto. Voluptatibus?
+    </p>
+    <ol>
+      <li>Primer elemento de la lista</li>
+      <li class="especial">Segundo elemento de la lista</li>
+      <li>Tercer elemento de la lista</li>
+      <li>Cuarto elemento de la lista</li>
+    </ol>
+    <div id="texto"></div>
+    <script>
+      async function getData() {
+        try {
+          response = await axios.get(
+            "https://jsonplaceholder.typicode.com/users"
+          );
+        } catch (err) {
+          alert("Imposible obtener datos");
+          console.log(err);
+          return;
+        }
+
+        console.log(response);
+      }
+      getData();
+      but = document.querySelector("button");
+      but.onclick = getData;
+    </script>
+  </body>
+</html>
