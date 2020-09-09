@@ -8,25 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- El título que aparece en la pestaña del navegador -->
     <title>Headers 3 Liceo</title>
-    <style>
-        /* todos los elementos de tipo h2 */
-        body{
-            margin: 50px;
-            border: 5px solid red;
-            padding: 30px;
-        }
-        h2{
-            color: green;
-            text-align: center;
-
-        }
-        p{
-            font-size: 18px;
-            font-weight: bold;
-            font-family:Verdana, Geneva, Tahoma, sans-serif;
-
-        }
-    </style>
+    <link rel="stylesheet" href="estilos.css">
   </head>
   <body>
     <h1 style="color:blue">Esto es un encabezado</h1>
@@ -51,7 +33,7 @@
       alt="Gravitación universal"
     />
     <h3 style="color:blue">Pasos para resolver un problema de física:</h3>
-    <ol>
+    <ol id="miLista">
       <li>Leer bien el problema</li>
       <li>Hacer un esquema de la situación</li>
       <li>Determinar los datos dados y los datos que se preguntan</li>
@@ -92,5 +74,6 @@
         <input type="text">
         <input type="password">
     </form>
+    <script src="selectoresDom.js"></script>
   </body>
 </html>

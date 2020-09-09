@@ -1,0 +1,15 @@
+/* todos los elementos de tipo h2 */
+body {
+  margin: 50px;
+  border: 5px solid red;
+  padding: 30px;
+}
+h2 {
+  color: green;
+  text-align: center;
+}
+p {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
