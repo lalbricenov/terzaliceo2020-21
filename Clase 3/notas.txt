@@ -1,0 +1,9 @@
+APIs:
+Application Programming Interface,
+API web: servidor que da como resultado datos, pueden estar en el formato JSON.
+JSON: javascript object notation
+https://lalbricenov.github.io/tutoriales/APIs/howtoJS.html
+
+
+CALLBACK FUNCTIONS: Funciones se ejecutan al obtener la respuesta.
+Ejecución síncrona y asíncrona
