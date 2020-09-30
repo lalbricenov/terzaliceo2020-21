@@ -1,0 +1,8 @@
+METHOD: GET
+
+    https://www.google.com/search?q=tierra&tbm=isch
+
+    https://www.fisica.com/search?tema=mru&dificultad=facil
+
+METHOD: POST
+    Seguro, para cosas que no deberían mostrarse en la url, por ejemplo contraseñas.
