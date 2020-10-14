@@ -1,5 +1,5 @@
 let mercado = JSON.parse(localStorage.getItem("Mercado"));
-
+if (mercado == null) mercado = [];
 let lista = document.querySelector("#listaMercado");
 
 function addElemento(nombre) {
