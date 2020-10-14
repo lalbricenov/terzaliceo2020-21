@@ -1,4 +1,4 @@
-let mercado = [];
+let mercado = JSON.parse(localStorage.getItem("Mercado"));
 
 let lista = document.querySelector("#listaMercado");
 
@@ -27,15 +27,17 @@ function btnPresionado() {
   mercado.push(nombre);
   // Actualizar la lista
   generarListaHtml();
+  // Guardar en el almacenamiento local
+  localStorage.setItem("Mercado", JSON.stringify(mercado));
 }
-
 btn.onclick = btnPresionado;
+generarListaHtml();
 
 // Accediendo al almacenamiento local
 // El almacenamiento local permite guardar solamente cadenas de caracteres.
 // se debe convertir la lista en una cadena de caracteres
-localStorage.setItem("Mercado", JSON.stringify(mercado));
-console.log(JSON.parse(localStorage.getItem("Mercado")));
+
+// console.log(JSON.parse(localStorage.getItem("Mercado")));
 // localStorage.setItem("Curso", "Terza");
 // localStorage.setItem("Edad", "16");
 // localStorage.setItem("Materia", "fisica");
