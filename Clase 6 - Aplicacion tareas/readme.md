@@ -11,7 +11,11 @@ Aplicación que permite llevar el registro de las tareas que se deben hacer. Pro
 
 Clone este repositorio a su computador, para esto use el comando
 
-`git clone urldesurepositorio`
+`git clone urldesurepositorio .`
+
+Por ejemplo: `git clone https://github.com/lalbricenov/appTareasTemplate .`
+
+Tener en cuenta el punto que está al final
 
 # Entendiendo
 
@@ -48,7 +52,7 @@ Completar la implementación de la aplicación. Debe completar los siguientes el
 
 # Entregando
 
-Para entregar la tarea debe hacer desde la carpeta de los archivos:
+Para entregar la tarea lo que debe hacer es hacer commits a su repositorio. Para eso puede usar los siguientes comandos:
 
 - `git add .`
 - `git commit -m "mensaje del commit"`
