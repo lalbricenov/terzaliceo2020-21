@@ -9,7 +9,7 @@ Aplicación que permite llevar el registro de las tareas que se deben hacer. Pro
 
 # Iniciando
 
-Clone este repositorio a su computador, para esto use el comando
+Clone este repositorio a su computador, para esto use cree una carpeta en su computador. La carpeta no debe estar dentro de ningún otro repositorio. Luego abra la carpeta con visual studio code y corra el comando:
 
 `git clone urldesurepositorio .`
 
