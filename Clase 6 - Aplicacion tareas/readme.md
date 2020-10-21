@@ -9,7 +9,9 @@ Aplicación que permite llevar el registro de las tareas que se deben hacer. Pro
 
 # Iniciando
 
-Clone este repositorio a su computador, para esto haga click en el botón clone....
+Clone este repositorio a su computador, para esto use el comando
+
+`git clone urldesurepositorio`
 
 # Entendiendo
 
@@ -43,3 +45,11 @@ Completar la implementación de la aplicación. Debe completar los siguientes el
 2. `controllerIndex.js`: Debe hacer el llamado a las funciones addTarea y modifyTarea en los lugares adecuados y con los argumentos adecuados, de manera que los parámetros recibidos sean utilizados.
 
 3. `styles.css`: Debe darle estilo a su aplicación para que se vea bien. Puede usar por ejempo: colores, tipos de letra, bordes, padding, márgenes que considere apropiados. Si lo deseea puede usar css grid. Puede usar [bootstrap](https://getbootstrap.com/) si lo desea.
+
+# Entregando
+
+Para entregar la tarea debe hacer desde la carpeta de los archivos:
+
+- `git add .`
+- `git commit -m "mensaje del commit"`
+- `git push origin master`
