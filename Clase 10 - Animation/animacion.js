@@ -11,7 +11,7 @@ let dAngle = 5;
 function mover() {
   x = x + dX;
   angle = angle + dAngle;
-  terza.style.transform = `translate(${x}px) rotate(${angle}deg)`;
+  terza.style.transform = `translate(${x}px) rotate(${angle})`;
 }
 let idMovimiento;
 let idColor;
