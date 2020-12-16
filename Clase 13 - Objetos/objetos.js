@@ -6,7 +6,7 @@ let miVaso = {
   contenidoActual: 200,
   material: "vidrio",
   dueno: "Luis",
-  // PROPIEDADES
+  // MÉTODOS
   regarAgua: function (cantidad) {
     this.contenidoActual -= cantidad;
   },
@@ -14,6 +14,8 @@ let miVaso = {
     this.contenidoActual = this.capacidad;
   },
 };
+
+// Se puede acceder a las propiedades y los métodos del objeto usando un punto.
 console.log(miVaso.capacidad);
 console.log(miVaso.contenidoActual);
 miVaso.regarAgua(15);
@@ -21,6 +23,7 @@ console.log(miVaso.contenidoActual);
 miVaso.llenar();
 console.log(miVaso.contenidoActual);
 
+// O se pueden crear usando una FACTORY FUNCTION.
 // La función siguiente se llama FACTORY FUNCTION, y su tarea es crear objetos con
 // las propiedades deseadas. La ventaja que tiene es que se puede utilizar muchas veces para generar muchos objetos de la misma clase.
 function Vaso(color, capacidad, contenidoActual, material, dueno) {
