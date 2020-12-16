@@ -34,11 +34,12 @@ let dT = 0.03;
 // coordenadas del objeto que controla el usuario
 let x2 = 200;
 let y2 = 200;
-// let angle2 = 0
+let angle = 0;
 function draw(images) {
   // t += 0.03;
   x = x + vX * dT; // 50 + 10*0.03 = 50.3
   y = y + vY * dT; // 50 + 10*0.03 = 50.3
+  angle = angle + 0.1;
   // Si está chocando con alguna pared, entonces cambiar de signo la velocidad
   // choque con la pared inferior
   if (400 - y < 15) vY = -vY;
@@ -46,9 +47,16 @@ function draw(images) {
   if (400 - x < 15) vX = -vX;
   // choque con la pared superior
   if (y - 0 < 15) vY = -vY;
+
+  // if(se estan chocando)
+  // alert("perdiste")
   ctx.clearRect(0, 0, 400, 400);
   ctx.drawImage(images.yoda, x2, y2, 60, 60);
-  ctx.drawImage(images.soccerBall, x - 15, y - 15, 30, 30);
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.drawImage(images.soccerBall, -15, -15, 30, 30);
+  ctx.rotate(-angle);
+  ctx.translate(-x, -y);
   // ctx.drawImage(images.yoda, 200, 200, 50, 50);
 }
 // La variable images contiene las imagenes cargadas
