@@ -27,11 +27,13 @@ console.log(miVaso.contenidoActual);
 // La función siguiente se llama FACTORY FUNCTION, y su tarea es crear objetos con
 // las propiedades deseadas. La ventaja que tiene es que se puede utilizar muchas veces para generar muchos objetos de la misma clase.
 function Vaso(color, capacidad, contenidoActual, material, dueno) {
+  // PROPIEDADES
   this.color = color;
   this.capacidad = capacidad;
   this.contenidoActual = contenidoActual;
   this.material = material;
   this.dueno = dueno;
+  // METODOS
   (this.regarAgua = function (cantidad) {
     this.contenidoActual -= cantidad;
   }),
@@ -55,3 +57,10 @@ console.log(vaso2.color);
 console.log(vaso2.contenidoActual);
 vaso2.regarAgua(15);
 console.log(vaso2.contenidoActual);
+// Se puede crear otro vaso, y será independiente del primero.
+let vaso3 = new Vaso("pink", 300, 100, "metal", "Pedro");
+console.log(vaso3.capacidad);
+console.log(vaso3.color);
+console.log(vaso3.contenidoActual);
+vaso2.regarAgua(15);
+console.log(vaso3.contenidoActual);
