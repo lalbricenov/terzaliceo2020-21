@@ -1,7 +1,8 @@
 let canvas = document.querySelector("#miCanvas");
 let ctx = canvas.getContext("2d");
 let drawObj={draw:function(){}}
-let IMAGES, mainInterval
+let IMAGES
+let mainInterval
 let dT = 30
 function loadImages(sources, callback) {
   let images = {};
@@ -14,9 +15,8 @@ function loadImages(sources, callback) {
     images[src].onload = function () {
       loadedImages++;
       if (loadedImages >= numImages) {
+        console.log("aca se define IMAGES")
         callback(images);
-        IMAGES = images
-
       }
     };
     images[src].src = sources[src];
@@ -29,7 +29,8 @@ let sources = {
   soccerBall:
     "https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg",
 };
-function start() {  
+function start(images) {  
+  IMAGES = images
   mainInterval = window.setInterval(drawObj.draw, dT);
 }
 // function stop(mainInterval){
@@ -41,6 +42,6 @@ function run(){
 }
 // La variable images contiene las imagenes cargadas
 
-
+// console.log(IMAGES)
 
 export {canvas, ctx, drawObj, IMAGES, dT, run, start, mainInterval}

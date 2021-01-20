@@ -1,21 +1,46 @@
 import {IMAGES as images} from './initialize.js'
 import {ctx, drawObj, run, start, dT} from './initialize.js'
 
-let x = 50;
-let y = 300;
-// let dX = 5;
-// let dY = -2;
-let vX = 5;
-let v0Y = -40;
-let aY = 2;
-let t = 0;
+// CREACIón del objeto balón
+// PROPIEDADES> x, y, vX, vY, r, imagen
+// METODOS> dibujarse
+
+// console.log(images)
+let balon = {
+    //PROPIEDADES
+    x:200,
+    y:200,
+    r:15,
+    vX: 50,// px por segundo
+    vY: -50,
+    // imagen: undefined,
+    //METODOS
+    dibujarse:function(){
+        // ctx.drawImage(this.imagen, this.x-this.r, this.y-this.r, 2*this.r, 2*this.r);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 2*Math.PI, 0);
+        ctx.stroke();
+        ctx.fill();
+    },
+    moverse:function(){
+        this.x = this.x + this.vX * dT/1000;
+        this.y = this.y + this.vY * dT/1000;
+    }
+
+}
+
+// Puedo crear un objeto apartir del objeto balon
+let balon2 = Object.create(balon)
+balon2.x = 0;
+balon2.y = 0;
+balon2.vX = 10;
+balon2.vY = 10;
 drawObj.draw =  function(){
-  t += 1;
-  x = 0 + vX * t;
-  y = 400 + v0Y * t + (aY * Math.pow(t, 2)) / 2;
-  ctx.clearRect(0, 0, 400, 400);
-  ctx.drawImage(images.soccerBall, x, y, 30, 30);
-  ctx.drawImage(images.yoda, 200, 200, 50, 50);
+    ctx.clearRect(0, 0, 400, 400);
+    balon.dibujarse();
+    balon2.dibujarse()
+    balon.moverse();
+    balon2.moverse();
 }
 run()
 
