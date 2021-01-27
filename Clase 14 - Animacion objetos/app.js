@@ -29,12 +29,13 @@ let balon = {
 
 }
 
-// Puedo crear un objeto apartir del objeto balon
+// Puedo crear un objeto a partir del objeto balon
 let balon2 = Object.create(balon)
 balon2.x = 0;
 balon2.y = 0;
 balon2.vX = 10;
 balon2.vY = 10;
+
 drawObj.draw =  function(){
     ctx.clearRect(0, 0, 400, 400);
     balon.dibujarse();
