@@ -1,5 +1,5 @@
 import {canvas, IMAGES as images} from './initialize.js'
-import {ctx, drawObj, run, start, dT} from './initialize.js'
+import {ctx, drawObj, run, start, dT, mainInterval} from './initialize.js'
 
 // CREACIón del objeto balón
 // PROPIEDADES> x, y, vX, vY, r, imagen
@@ -33,13 +33,53 @@ let Balon = {
 
 }
 
+let puntaje = 0;
+function mostrarPuntaje(){
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "black"
+    ctx.fillText(`Puntaje: ${puntaje}`, 10, 50);
+}
+
+function algunaSeSalio(){
+    for (let balon of balones){
+        // se salió?
+        if(balon.x >= 400 + balon.r || balon.x <= -balon.r || 
+            balon.y >= 400 + balon.r || balon.y <= -balon.r )
+        {
+            return true;    
+        }
+    }
+    return false;
+}
+
 drawObj.draw =  function(){
-    ctx.clearRect(0, 0, 400, 400);
+    ctx.clearRect(0,0,400,400);
+    if (puntaje >= 10){
+        // detener el juego
+        clearInterval(mainInterval);
+        // muestre el mensaje de que ganó
+        ctx.font = "50px Arial";
+        ctx.fillStyle = "green"
+        ctx.fillText(`GANASTE`, 80, 180);
+        
+    }
+    // Si alguna de las particulas se salió, y aún no tiene 10 puntos
+    // pierde
+    if (puntaje < 10 && algunaSeSalio() ){
+        // detener el juego
+        clearInterval(mainInterval);
+        // muestrar el mensaje de que perdio
+        ctx.font = "50px Arial";
+        ctx.fillStyle = "red"
+        ctx.fillText(`PERDISTE`, 80, 180);
+    }
+    mostrarPuntaje()
     for (let balon of balones){
         // console.log(particula)
-        balon.dibujarse()
-        balon.moverse()
+        balon.dibujarse();
+        balon.moverse();
     }
+
     // balon.dibujarse();
     // balon2.dibujarse()
     // balon.moverse();
@@ -49,12 +89,14 @@ run()
 
 function crearParticula(){
     let nuevoBalon = Object.create(Balon)
+    puntaje = puntaje + 1;
     //asignar x, y, vX y vY
     nuevoBalon.x = 200
     nuevoBalon.y = 200
     // Genero el angulo de manera aleatoria
     // Math.random genera un numero aleatorio entre 0 y 1
     let ang = 2 * Math.PI * Math.random()
+    // let v = numero aleatorio
     nuevoBalon.vX = 10 * Math.cos(ang)
     nuevoBalon.vY = 10 * Math.sin(ang)
 
