@@ -67,20 +67,20 @@ drawObj.setup = function(){
         x:200,
         y:200,
         r:15,
-        v:50;
+        v:50,
         // Variable booleana que determina si la nave está en movimiento o no
         enMovimiento: false,
-        angle: 45,
+        angle: 0,
         imagen: images.spaceShip,
         //METODOS
         dibujarse:function(){
-            drawRotated(this.imagen, this.x, this.y,this.angle-45, 2*this.r, 2*this.r);
+            drawRotated(this.imagen, this.x, this.y,this.angle+90, 2*this.r, 2*this.r);
         },
         moverse:function(){
             if (this.enMovimiento)
             {
-                this.x = this.x + this.v*Math. * dT/1000;
-                this.y = this.y + this.vY * dT/1000;
+                this.x = this.x + this.v*Math.cos(this.angle*Math.PI/180) * dT/1000;
+                this.y = this.y + this.v*Math.sin(this.angle*Math.PI/180) * dT/1000;
             }
         }
     
@@ -171,9 +171,9 @@ document.onkeyup = teclaLevantada;
 
 function mouseMovido(e){
     let newAng = Math.atan((e.offsetY - Nave.y)/(e.offsetX - Nave.x))* 180/Math.PI;
-    if (e.offsetX > Nave.x) newAng += 180
+    if (e.offsetX < Nave.x) newAng += 180
     Nave.angle = newAng;
-    console.log(newAng)
+    // console.log(newAng)
 }
 document.onmousemove = mouseMovido;
 

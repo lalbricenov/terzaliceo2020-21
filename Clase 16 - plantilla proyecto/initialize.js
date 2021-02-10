@@ -31,7 +31,7 @@ let sources = {
   soccerBall:
     "https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg",
   spaceShip:
-  "https://freesvg.org/img/SimpleSpaceship2.png"
+  "http://cdn.onlinewebfonts.com/svg/img_559697.png"
 };
 function resume() {
   if(!initialSetUpDone){
