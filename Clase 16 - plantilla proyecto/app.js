@@ -71,7 +71,8 @@ GAME.setup = function(){
     GAME.objects ={balones:[], player:new Nave(200, 200, 30, 30,50,0)}
     GAME.score = 0;
     GAME.nitros = 4;
-    GAME.totalTime = 20000;// 20 seconds
+    GAME.tiempoTotal = 20000;// 20 seconds
+    GAME.tiempoRestante = GAME.tiempoTotal;// 20 seconds
     GAME.initialTime = window.performance.now();
 }
 
@@ -85,11 +86,9 @@ function mostrarPuntaje(){
 function mostrarTiempo() {
     // console.log(GAME.initialTime)
     // console.log(window.performance.now())
-    let elapsedT = window.performance.now() - GAME.initialTime;
-    let remainingT = GAME.totalTime - elapsedT;
     GAME.ctx.font = "20px Arial";
     GAME.ctx.fillStyle = "black"
-    GAME.ctx.fillText(`Tiempo: ${remainingT/1000}`, 10, 100);
+    GAME.ctx.fillText(`Tiempo: ${Math.round(GAME.tiempoRestante/1000)}`, 10, 100);
 }
 function colisionConNave(balon)
 {
@@ -130,6 +129,8 @@ function resetSpeed() {
 }
 GAME.draw =  function(){
     GAME.ctx.clearRect(0,0,400,400);
+    let elapsedT = window.performance.now() - GAME.initialTime;
+    GAME.tiempoRestante = GAME.tiempoTotal - elapsedT;
     // console.log(GAME.objects)
     if (GAME.score >= 10){
         // detener el juego
@@ -141,7 +142,7 @@ GAME.draw =  function(){
     }
     // Si alguna de las particulas se salió, y aún no tiene 10 puntos
     // pierde
-    if (GAME.score  < 10 && algunaSeSalio() ){
+    if ( algunaSeSalio() || GAME.tiempoRestante < 0 ){
         // detener el juego
         GAME.pause();
         // muestrar el mensaje de que perdio
