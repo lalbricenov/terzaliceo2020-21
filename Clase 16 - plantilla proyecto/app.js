@@ -1,181 +1,251 @@
-import {canvas, drawRotated, images} from './initialize.js'
-import {ctx, drawObj, run, resume, pause, running, dT, mainInterval} from './initialize.js'
+'use strict'
+import {GAME} from './initialize.js'
 
 // CREACIón del objeto balón
 // PROPIEDADES> x, y, vX, vY, r, imagen
 // METODOS> dibujarse, moverse
 
-// Creo un array para almacenar todas las particulas
-let balones = []
+class Balon {
+    constructor(x, y, vX, vY, r, angle, w)
+    {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.vX = vX;
+        this.vY = vY;
+        this.angle = angle;
+        this.w = w;//angular velocity
+        this.imagen = GAME.images.soccerBall;
+    }
 
-// console.log(images)
-let Balon;
-let Nave;
-
-
-let puntaje = 0;
-function mostrarPuntaje(){
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "black"
-    ctx.fillText(`Puntaje: ${puntaje}`, 10, 50);
+    dibujarse(){
+        // console.log(this.imagen)
+        
+        GAME.drawRotatedImage(this.imagen, this.x, this.y,this.angle, 2*this.r, 2*this.r);
+    }
+    moverse(){
+        this.x = this.x + this.vX * GAME.dT/1000;
+        this.y = this.y + this.vY * GAME.dT/1000;
+        this.angle = this.angle + this.w * GAME.dT/1000;
+    }
 }
 
+class Nave{
+    constructor(x, y,speed, width, height, angle)
+    {
+        this.x = x;
+        this.y = y;
+        this.vX;
+        this.vY;
+        this.speed = speed
+        this.angle = angle;
+        this.width = width;
+        this.height = height;
+        this.imagen = GAME.images.spaceShip;
+        this.enMovimiento = false;
+        this.enReversa = false;
+    }
+
+    dibujarse(){
+        
+        GAME.drawRotatedImage(this.imagen, this.x, this.y,this.angle+90, this.width, this.height);
+    }
+    moverse(){
+        this.vX = this.speed*Math.cos(this.angle*Math.PI/180);
+        this.vY = this.speed*Math.sin(this.angle*Math.PI/180);
+        if (this.enMovimiento)
+        {
+            if(this.enReversa){
+                this.x -= this.vX * GAME.dT/1000;
+                this.y -= this.vY * GAME.dT/1000;
+            }
+            else{
+                this.x += this.vX * GAME.dT/1000;
+                this.y += this.vY * GAME.dT/1000;
+            }
+        }
+    }
+}
+
+GAME.setup = function(){
+    GAME.objects ={balones:[], player:new Nave(200, 200, 30, 30,50,0)}
+    GAME.score = 0;
+    GAME.nitros = 4;
+    GAME.totalTime = 20000;// 20 seconds
+    GAME.initialTime = window.performance.now();
+}
+
+function mostrarPuntaje(){
+    GAME.ctx.font = "30px Arial";
+    GAME.ctx.fillStyle = "black"
+    GAME.ctx.fillText(`Puntaje: ${GAME.score}`, 10, 50);
+    GAME.ctx.font = "20px Arial";
+    GAME.ctx.fillText(`Nitro: ${GAME.nitros}`, 10, 80);
+}
+function mostrarTiempo() {
+    // console.log(GAME.initialTime)
+    // console.log(window.performance.now())
+    let elapsedT = window.performance.now() - GAME.initialTime;
+    let remainingT = GAME.totalTime - elapsedT;
+    GAME.ctx.font = "20px Arial";
+    GAME.ctx.fillStyle = "black"
+    GAME.ctx.fillText(`Tiempo: ${remainingT/1000}`, 10, 100);
+}
+function colisionConNave(balon)
+{
+    // console.log(balon.r, GAME.objects.player.width, balon.x,GAME.objects.player.x, balon.y,GAME.objects.player.y )
+    let distancia = Math.sqrt(Math.pow(balon.x - GAME.objects.player.x, 2) + Math.pow(balon.y - GAME.objects.player.y, 2));
+    if (distancia < balon.r + GAME.objects.player.width/2) return true;
+    else return  false;
+}
+function buscarColisiones()
+{
+    let colisiones = []
+    for (let i=0; i < GAME.objects.balones.length; i++){
+        if(colisionConNave(GAME.objects.balones[i])) colisiones.push(i);
+    }
+    return colisiones;
+}
+
+
 function algunaSeSalio(){
-    for (let balon of balones){
+    for (let balon of GAME.objects.balones){
         // se salió?
-        if(balon.x >= 400 + balon.r || balon.x <= -balon.r || 
+        if(balon.x >= 400 + balon.r || balon.x <= -balon.r ||
             balon.y >= 400 + balon.r || balon.y <= -balon.r )
         {
-            return true;    
+            return true;
         }
     }
     return false;
 }
-
-drawObj.setup = function(){
-    Balon = {
-        //PROPIEDADES
-        x:200,
-        y:200,
-        r:15,
-        vX: 50,// px por segundo
-        vY: -50,
-        w:60,// grados por segundo
-        angle: 0,
-        imagen: images.soccerBall,
-        //METODOS
-        dibujarse:function(){
-            // console.log(this.imagen)
-            drawRotated(this.imagen, this.x, this.y,this.angle, 2*this.r, 2*this.r);
-            // ctx.drawImage(this.imagen, this.x-this.r, this.y-this.r, 2*this.r, 2*this.r);
-            // ctx.beginPath();
-            // ctx.arc(this.x, this.y, this.r, 2*Math.PI, 0);
-            // ctx.fillStyle = "rgba(0,0,0,0.5)"
-            // ctx.stroke();
-            // ctx.fill();
-        },
-        moverse:function(){
-            this.x = this.x + this.vX * dT/1000;
-            this.y = this.y + this.vY * dT/1000;
-            this.angle = this.angle + this.w *dT/1000;
-        }
-    
-    };
-
-    Nave = {
-        //PROPIEDADES
-        x:200,
-        y:200,
-        r:15,
-        v:50,
-        // Variable booleana que determina si la nave está en movimiento o no
-        enMovimiento: false,
-        angle: 0,
-        imagen: images.spaceShip,
-        //METODOS
-        dibujarse:function(){
-            drawRotated(this.imagen, this.x, this.y,this.angle+90, 2*this.r, 2*this.r);
-        },
-        moverse:function(){
-            if (this.enMovimiento)
-            {
-                this.x = this.x + this.v*Math.cos(this.angle*Math.PI/180) * dT/1000;
-                this.y = this.y + this.v*Math.sin(this.angle*Math.PI/180) * dT/1000;
-            }
-        }
-    
+function quitarBalones(colisiones) {
+    for(let pos of colisiones){
+        // splice quita elementos de un array.
+        GAME.objects.balones.splice(pos, 1);
     }
-    
 }
-drawObj.draw =  function(){
-    ctx.clearRect(0,0,400,400);
-    if (puntaje >= 10){
+function resetSpeed() {
+    GAME.objects.player.speed = 15;
+}
+GAME.draw =  function(){
+    GAME.ctx.clearRect(0,0,400,400);
+    // console.log(GAME.objects)
+    if (GAME.score >= 10){
         // detener el juego
-        pause();
+        GAME.pause();
         // muestre el mensaje de que ganó
-        ctx.font = "50px Arial";
-        ctx.fillStyle = "green"
-        ctx.fillText(`GANASTE`, 80, 180);
-        
+        GAME.ctx.font = "50px Arial";
+        GAME.ctx.fillStyle = "green";
+        GAME.ctx.fillText(`GANASTE`, 80, 180);
     }
     // Si alguna de las particulas se salió, y aún no tiene 10 puntos
     // pierde
-    if (puntaje < 10 && algunaSeSalio() ){
+    if (GAME.score  < 10 && algunaSeSalio() ){
         // detener el juego
-        clearInterval(mainInterval);
+        GAME.pause();
         // muestrar el mensaje de que perdio
-        ctx.font = "50px Arial";
-        ctx.fillStyle = "red"
-        ctx.fillText(`PERDISTE`, 80, 180);
+        GAME.ctx.font = "50px Arial";
+        GAME.ctx.fillStyle = "red";
+        GAME.ctx.fillText(`PERDISTE`, 80, 180);
     }
-    mostrarPuntaje()
-    for (let balon of balones){
-        // console.log(particula)
+    mostrarPuntaje();
+    mostrarTiempo();
+    for (let balon of GAME.objects.balones){
+        // console.log(balon);
         balon.dibujarse();
         balon.moverse();
     }
-    Nave.dibujarse();
-    Nave.moverse();
+    // console.log(player)
+    GAME.objects.player.dibujarse();
+    GAME.objects.player.moverse();
+    // buscar colisiones devuelve una lista con los índices de los balónes con los cuales la nave chocó
+    let colisiones = buscarColisiones();
+    // Se quitan los balones de la lista de balones cuando la nave los toca
+    quitarBalones(colisiones);
+    // Se suman los puntos correspondientes
+    GAME.score += colisiones.length;
 }
 
-run();
+GAME.start();
 
 function crearParticula(){
-    let nuevoBalon = Object.create(Balon)
-    puntaje = puntaje + 1;
-    // Asignarle al nuevo balón su correspondiente imagen
-    // nuevoBalon.imagen = images.soccerBall;
-    //asignar x, y, vX y vY
-    nuevoBalon.x = 200;
-    nuevoBalon.y = 200;
-    // Genero el angulo de manera aleatoria
-    // Math.random genera un numero aleatorio entre 0 y 1
-    let ang = 2 * Math.PI * Math.random()
-    // let v = numero aleatorio
-    nuevoBalon.vX = 10 * Math.cos(ang)
-    nuevoBalon.vY = 10 * Math.sin(ang)
+
+    let ang = 2 * Math.PI * Math.random();
+    let newX = 50 + 300 *Math.random()
+    let newY = 50 + 300 *Math.random()
+    let nuevoBalon = new Balon(newX, newY,10 * Math.cos(ang), 10 * Math.sin(ang), 15, 0, 360);
 
     // añado el nuevo balón al array de balones
-    balones.push(nuevoBalon)
-    // console.log(balones)
+    GAME.objects.balones.push(nuevoBalon);
 }
 
 // Al hacer click se va a ejecutar la función crear partícula
-canvas.onclick = crearParticula
+GAME.canvas.onclick = crearParticula
 
 
 function teclaPresionada(e){
+    console.log(e.code)
     if (e.code =='Space')
     {
-        if (running) pause();
-        else resume();
+        console.log(e.shiftKey)
+        if(e.shiftKey) GAME.reset();
+        else{
+            if (GAME.running) GAME.pause();
+            else GAME.play();
+        }
 
     }
     if (e.code == 'KeyW')
     {
-        Nave.enMovimiento = true
-        console.log('arrancar')
+        GAME.objects.player.enMovimiento = true
+        // console.log('arrancar')
     }
-    console.log(e.code)
+    if (e.code == 'KeyS')
+    {
+        GAME.objects.player.enMovimiento = true;
+        GAME.objects.player.enReversa = true;
+        // console.log('moverse hacia atras')
+    }
+    if (e.code == 'KeyE')
+    {
+        if (GAME.nitros > 0)
+        {
+            console.log("increasing speed")
+            GAME.objects.player.speed = 80;
+            GAME.nitros -= 1;
+            window.setTimeout(resetSpeed, 1000);
+        }
+        // console.log('arrancar')
+    }
+    // console.log(e.code)
 }
 function teclaLevantada(e)
 {
     if (e.code == 'KeyW')
     {
-        Nave.enMovimiento = false;
-        console.log('detenerse')
+        GAME.objects.player.enMovimiento = false;
+        // console.log('detenerse')
+    }
+    if (e.code == 'KeyS')
+    {
+        GAME.objects.player.enMovimiento = false;
+        GAME.objects.player.enReversa = false;
+        // console.log('detener el movimiento hacia atrás')
     }
 }
 document.onkeydown = teclaPresionada;
 document.onkeyup = teclaLevantada;
 
 function mouseMovido(e){
-    let newAng = Math.atan((e.offsetY - Nave.y)/(e.offsetX - Nave.x))* 180/Math.PI;
-    if (e.offsetX < Nave.x) newAng += 180
-    Nave.angle = newAng;
-    // console.log(newAng)
+    let newAng = Math.atan((e.offsetY - GAME.objects.player.y)/(e.offsetX - GAME.objects.player.x))* 180/Math.PI;
+    if (e.offsetX < GAME.objects.player.x) newAng += 180
+    GAME.objects.player.angle = newAng;
+    // console.log(newAng)w
 }
 document.onmousemove = mouseMovido;
+
+
 
 
 
