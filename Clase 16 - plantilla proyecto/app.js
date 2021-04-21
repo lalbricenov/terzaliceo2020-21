@@ -68,7 +68,7 @@ class Nave{
 }
 
 GAME.setup = function(){
-    GAME.objects ={balones:[], player:new Nave(200, 200, 30, 30,50,0)}
+    GAME.objects ={balones:[], player:new Nave(200, 200, 60, 30,50,0)}
     GAME.score = 0;
     GAME.nitros = 4;
     GAME.tiempoTotal = 20000;// 20 seconds
@@ -125,7 +125,7 @@ function quitarBalones(colisiones) {
     }
 }
 function resetSpeed() {
-    GAME.objects.player.speed = 15;
+    GAME.objects.player.speed = 60;
 }
 GAME.draw =  function(){
     GAME.ctx.clearRect(0,0,400,400);
@@ -213,7 +213,7 @@ function teclaPresionada(e){
         if (GAME.nitros > 0)
         {
             console.log("increasing speed")
-            GAME.objects.player.speed = 80;
+            GAME.objects.player.speed = 120;
             GAME.nitros -= 1;
             window.setTimeout(resetSpeed, 1000);
         }
