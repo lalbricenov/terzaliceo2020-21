@@ -1,0 +1,9 @@
+Crear variable height
+pedir valor de la altura al usuario
+si la altura no es valida volver a la linea 2
+
+Dibujar piso con 1 #
+Dibujar piso con 2 #
+Dibujar piso con 3 #
+...
+Dibujar piso con height #
